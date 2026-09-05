@@ -92,7 +92,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         runIntro();
     } catch (err) {
         console.error('[App] Initialization failed:', err);
-        showError('No se pudieron cargar las canciones.', 'Revisa que tracks.json exista y sea válido.');
+        const isFileProtocol = window.location.protocol === 'file:';
+        const message = isFileProtocol
+            ? 'Abre este proyecto con Live Server para permitir la carga de tracks.json.'
+            : 'Revisa que tracks.json exista y sea válido.';
+        showError('No se pudieron cargar las canciones.', message);
     }
 });
 

@@ -18,6 +18,16 @@ body {
     transition: background var(--transition-slow);
 }
 
+#error-state {
+    display: none;
+}
+
+#error-state.visible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* ── Base View Container ───────────────────────────── */
 .view {
     position: absolute;
