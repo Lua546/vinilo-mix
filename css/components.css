@@ -41,7 +41,7 @@
 }
 
 .track-list {
-    max-height: calc(4 * 66px + 3 * var(--space-1));
+    max-height: calc(5 * 66px + 4 * var(--space-1));
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
@@ -195,6 +195,11 @@
     z-index: 2;
     /* Positioning context so .vinyl-shine can overlay the disc */
     position: relative;
+    opacity: 1;
+}
+
+.vinyl-item--side {
+    opacity: 0.35;
 }
 
 .vinyl-item--center:focus-visible {
@@ -245,14 +250,13 @@
 }
 
 .vinyl-disc--main {
-    width: clamp(180px, 38vw, 240px);
-    height: clamp(180px, 38vw, 240px);
+    width: clamp(200px, 40vw, 250px);
+    height: clamp(200px, 40vw, 250px);
 }
 
 .vinyl-disc--side {
-    width: clamp(90px, 18vw, 130px);
-    height: clamp(90px, 18vw, 130px);
-    opacity: 0.3;
+    width: clamp(100px, 20vw, 135px);
+    height: clamp(100px, 20vw, 135px);
 }
 
 /* Dynamic Label inner ring */

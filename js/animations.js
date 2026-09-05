@@ -46,7 +46,7 @@ export function animateCarouselChange(centerDisc, direction, onMidpoint) {
         // Set 3D perspective on the carousel parent so rotationY looks correct
         gsap.set(carousel, { perspective: 900 });
 
-        const tl = gsap.timeline({ 
+        const tl = gsap.timeline({
             onComplete: () => {
                 // Instantly reset properties. Since incoming scaled up to look like center,
                 // and outgoing swapped positions, this snap is visually seamless.
@@ -78,26 +78,27 @@ export function animateCarouselChange(centerDisc, direction, onMidpoint) {
             duration: 0.3,
             ease: 'power1.in'
         }, 0)
-        .to(incoming, {
-            xPercent: incomingToCenterX / 2,
-            z: -120,
-            scale: 1.5,
-            rotationY: isNext ? -35 : 35,
-            autoAlpha: 0.65,
-            duration: 0.3,
-            ease: 'power1.in'
-        }, 0)
-        .to(outgoing, {
-            xPercent: outX,
-            z: -200,
-            scale: 0.5,
-            autoAlpha: 0,
-            duration: 0.3,
-            ease: 'power1.in'
-        }, 0);
+            .to(incoming, {
+                xPercent: incomingToCenterX / 2,
+                z: -120,
+                scale: 1.5,
+                rotationY: isNext ? -35 : 35,
+                autoAlpha: 0.65,
+                duration: 0.3,
+                ease: 'power1.in'
+            }, 0)
+            .to(outgoing, {
+                xPercent: outX,
+                z: -200,
+                scale: 0.5,
+                autoAlpha: 0,
+                duration: 0.3,
+                ease: 'power1.in'
+            }, 0);
 
         if (shine) {
-            tl.to(shine, { autoAlpha: 0, duration: 0.3 }, 0);
+            tl.to(shine, { autoAlpha: 0, duration: 0.3 }, 0)
+              .to(shine, { autoAlpha: 1, duration: 0.3 }, 0.3);
         }
 
         // SWAP DATA at exact midpoint
@@ -107,7 +108,8 @@ export function animateCarouselChange(centerDisc, direction, onMidpoint) {
         tl.set(outgoing, {
             xPercent: teleportX,
             rotationY: isNext ? -35 : 35,
-            z: -120
+            z: -120,
+            autoAlpha: 0
         }, 0.3);
 
         // PHASE 2: Move forward and settle flat (0.3s -> 0.6s)
@@ -116,28 +118,28 @@ export function animateCarouselChange(centerDisc, direction, onMidpoint) {
             z: 0,
             scale: 0.5, // Matches the 90px side disc
             rotationY: 0,
-            autoAlpha: 0.3,
+            autoAlpha: 0.35,
             duration: 0.3,
             ease: 'power1.out'
         }, 0.3)
-        .to(incoming, {
-            xPercent: incomingToCenterX,
-            z: 0,
-            scale: 2, // Matches the 180px center disc
-            rotationY: 0,
-            autoAlpha: 1,
-            duration: 0.3,
-            ease: 'power1.out'
-        }, 0.3)
-        .to(outgoing, {
-            xPercent: outgoingEndX,
-            z: 0,
-            scale: 1, // Normal side disc scale
-            rotationY: 0,
-            autoAlpha: 0.3,
-            duration: 0.3,
-            ease: 'power1.out'
-        }, 0.3);
+            .to(incoming, {
+                xPercent: incomingToCenterX,
+                z: 0,
+                scale: 2, // Matches the 180px center disc
+                rotationY: 0,
+                autoAlpha: 1,
+                duration: 0.3,
+                ease: 'power1.out'
+            }, 0.3)
+            .to(outgoing, {
+                xPercent: outgoingEndX,
+                z: 0,
+                scale: 1, // Normal side disc scale
+                rotationY: 0,
+                autoAlpha: 0.35,
+                duration: 0.3,
+                ease: 'power1.out'
+            }, 0.3);
     });
 }
 
@@ -165,14 +167,16 @@ export function animateViewTransition(outView, inView, direction = 'forward') {
     return new Promise((resolve) => {
         // Reset inView
         gsap.set(inView, { display: 'block', autoAlpha: 0, y: direction === 'forward' ? 50 : -50 });
-        
-        const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' }, onComplete: () => {
-            gsap.set(outView, { display: 'none' });
-            resolve();
-        }});
+
+        const tl = gsap.timeline({
+            defaults: { ease: 'power3.inOut' }, onComplete: () => {
+                gsap.set(outView, { display: 'none' });
+                resolve();
+            }
+        });
 
         tl.to(outView, { autoAlpha: 0, y: direction === 'forward' ? -50 : 50, duration: 0.3 })
-          .to(inView, { autoAlpha: 1, y: 0, duration: 0.4 }, '<0.1');
+            .to(inView, { autoAlpha: 1, y: 0, duration: 0.4 }, '<0.1');
     });
 }
 
@@ -182,11 +186,11 @@ export function animateCoverChange(coverEl, newSrc) {
         const tl = gsap.timeline({ defaults: { ease: 'power2.inOut' }, onComplete: resolve });
 
         tl.to(coverEl, { autoAlpha: 0, scale: 0.92, duration: 0.22 })
-          .call(() => {
-              coverEl.src = newSrc;
-          })
-          .set(coverEl, { scale: 0.92 })
-          .to(coverEl, { autoAlpha: 1, scale: 1, duration: 0.32, ease: 'power2.out' });
+            .call(() => {
+                coverEl.src = newSrc;
+            })
+            .set(coverEl, { scale: 0.92 })
+            .to(coverEl, { autoAlpha: 1, scale: 1, duration: 0.32, ease: 'power2.out' });
     });
 }
 
@@ -197,15 +201,15 @@ export function animateTrackChange(elements, swapFn) {
     const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
 
     tl.to(targets, { y: -10, autoAlpha: 0, duration: 0.18, stagger: 0.04 })
-      .call(swapFn)
-      .call(() => {
-          const fadeInTargets = Object.values(elements).filter(el => el && !el.classList?.contains('is-hidden'));
-          gsap.fromTo(
-              fadeInTargets,
-              { y: 10, autoAlpha: 0 },
-              { y: 0, autoAlpha: 1, duration: 0.26, stagger: 0.05, ease: 'power2.out' }
-          );
-      });
+        .call(swapFn)
+        .call(() => {
+            const fadeInTargets = Object.values(elements).filter(el => el && !el.classList?.contains('is-hidden'));
+            gsap.fromTo(
+                fadeInTargets,
+                { y: 10, autoAlpha: 0 },
+                { y: 0, autoAlpha: 1, duration: 0.26, stagger: 0.05, ease: 'power2.out' }
+            );
+        });
 }
 
 // ── Initial entrance ──────────────────────────────────
@@ -236,16 +240,16 @@ export function animateIntro(el) {
             });
 
             tl.to(viewList, { autoAlpha: 1, duration: 0.4 })
-              .from('.list-cta-header', { y: -10, autoAlpha: 0, duration: 0.4 }, '<0.1')
-              .from('#list-track-display', { y: -20, autoAlpha: 0, duration: 0.4 }, '<0.1')
-              .from('.vinyl-item', { scale: 0.8, autoAlpha: 0, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)' }, '<0.1')
-              .from('.track-list-header', { autoAlpha: 0, duration: 0.3 }, '<0.2')
-              .to(el.trackItems, {
-                  autoAlpha: 1,
-                  y: 0,
-                  duration: 0.3,
-                  stagger: { each: 0.045, from: 'start' },
-              }, '<0.1');
+                .from('.list-cta-header', { y: -10, autoAlpha: 0, duration: 0.4 }, '<0.1')
+                .from('#list-track-display', { y: -20, autoAlpha: 0, duration: 0.4 }, '<0.1')
+                .from('.vinyl-item', { scale: 0.8, autoAlpha: 0, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)' }, '<0.1')
+                .from('.track-list-header', { autoAlpha: 0, duration: 0.3 }, '<0.2')
+                .to(el.trackItems, {
+                    autoAlpha: 1,
+                    y: 0,
+                    duration: 0.3,
+                    stagger: { each: 0.045, from: 'start' },
+                }, '<0.1');
         }
     );
 }

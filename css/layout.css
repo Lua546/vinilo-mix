@@ -35,10 +35,11 @@ body {
     left: 0;
     width: 100%;
     height: 100vh;
+    height: 100dvh;
     display: none;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: var(--space-6) var(--space-4) calc(var(--space-6) * 2);
+    padding: var(--space-5) var(--space-4) calc(var(--space-8) + env(safe-area-inset-bottom, 24px));
     box-sizing: border-box;
     will-change: transform, opacity;
     background: var(--background);
@@ -51,19 +52,23 @@ body {
 /* ── View 1: List ───────────────────────────────────── */
 
 .view-list-inner {
-    max-width: 600px;
+    max-width: 540px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 /* List CTA Header */
 .list-cta-header {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
     gap: var(--space-3);
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-3);
     opacity: 0.5;
 }
 
@@ -83,19 +88,25 @@ body {
 
 /* List Track Display */
 .list-track-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    margin-bottom: var(--space-5);
-    min-height: 72px;
+    width: 100%;
+    margin-bottom: var(--space-3);
+    min-height: 54px;
 }
 
 .list-track-title {
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
     font-weight: 600;
     line-height: 1.1;
     margin-bottom: var(--space-1);
     color: var(--accent);
     transition: color var(--transition-slow);
+    text-align: center;
 }
 
 .list-track-meta {
@@ -103,6 +114,7 @@ body {
     font-size: 0.85rem;
     color: var(--muted);
     letter-spacing: 0.02em;
+    text-align: center;
 }
 
 /* ── View 2: Player ─────────────────────────────────── */
@@ -227,35 +239,55 @@ body {
     .view {
         position: relative;
         height: 100vh;
+        height: 100dvh;
         width: 100%;
         display: block !important;
         opacity: 1 !important;
         visibility: visible !important;
         transform: none !important;
+        overflow-y: auto;
     }
 
     #view-list {
         grid-column: 1;
         grid-row: 1;
         border-right: 1px solid var(--border);
-        padding: var(--space-8) var(--space-6);
+        padding: var(--space-5) var(--space-6) var(--space-6);
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
     }
 
     #view-player {
         grid-column: 2;
         grid-row: 1;
-        padding: var(--space-8) var(--space-6);
+        padding: var(--space-5) var(--space-6) var(--space-6);
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
     }
 
     .view-list-inner {
-        max-width: 520px;
-        height: 100%;
+        max-width: 480px;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: auto 0;
     }
 
     .view-player-inner {
         max-width: 420px;
-        padding-top: var(--space-8);
+        width: 100%;
+        padding-top: 0;
         justify-content: center;
+        margin: auto 0;
     }
 
     /* Hide back button on desktop — both panels always visible */
