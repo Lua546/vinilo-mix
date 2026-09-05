@@ -254,10 +254,15 @@ export function animateIntro(el) {
     );
 }
 
-// ── Play button micro-feedback ────────────────────────
+// ── Button micro-feedback (jump / pulse) ───────────────
 export function pulsePlayButton(btn) {
-    gsap.fromTo(btn,
-        { scale: 0.92 },
-        { scale: 1, duration: 0.25, ease: 'back.out(2.5)' }
-    );
+    gsap.timeline()
+        .to(btn, { scale: 1.15, duration: 0.12, ease: 'power2.out' })
+        .to(btn, { scale: 1, duration: 0.28, ease: 'back.out(3)' });
+}
+
+export function pulseControlButton(btn) {
+    gsap.timeline()
+        .to(btn, { scale: 1.18, duration: 0.12, ease: 'power2.out' })
+        .to(btn, { scale: 1, duration: 0.26, ease: 'back.out(3)' });
 }

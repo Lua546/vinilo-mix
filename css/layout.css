@@ -5,7 +5,13 @@
  * Mobile <1024px: toggle between views (SPA)
  */
 
-html, body {
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+html,
+body {
     width: 100%;
     height: 100vh;
     overflow: hidden;
@@ -209,7 +215,9 @@ body {
 /* ── Desktop Split Layout ──────────────────────────── */
 
 @media (min-width: 1024px) {
-    html, body {
+
+    html,
+    body {
         overflow: hidden;
     }
 

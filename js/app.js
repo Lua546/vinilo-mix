@@ -8,7 +8,7 @@ import { initPlayer, loadTrack, play, pause, togglePlay, next, previous, seekTo,
 import { updateTheme, applyFallbackTheme } from './theme.js';
 import { 
     initVinyl, playVinyl, pauseVinyl, animateCoverChange, 
-    animateTrackChange, animateIntro, pulsePlayButton,
+    animateTrackChange, animateIntro, pulsePlayButton, pulseControlButton,
     animateCarouselChange, setupCarouselObserver, animateViewTransition
 } from './animations.js';
 
@@ -276,6 +276,7 @@ function updatePlayerUI(track) {
 }
 
 function updateProgress(current, duration, pct) {
+    if (state.isDraggingProgress) return;
     const fillPct = (pct * 100).toFixed(2) + '%';
     dom.progressFill.style.width   = fillPct;
     dom.progressThumb.style.left   = fillPct;
@@ -309,13 +310,69 @@ function setupControls() {
         pulsePlayButton(dom.btnPlay);
         togglePlay();
     });
-    dom.btnPrev.addEventListener('click', () => previous());
-    dom.btnNext.addEventListener('click', () => next());
+    dom.btnPrev.addEventListener('click', () => {
+        pulseControlButton(dom.btnPrev);
+        previous();
+    });
+    dom.btnNext.addEventListener('click', () => {
+        pulseControlButton(dom.btnNext);
+        next();
+    });
 
-    dom.progressBar.addEventListener('click', (e) => {
+    // Progress bar dragging and click
+    state.isDraggingProgress = false;
+
+    function getProgressPct(e) {
         const rect = dom.progressBar.getBoundingClientRect();
-        const pct  = (e.clientX - rect.left) / rect.width;
-        seekTo(Math.max(0, Math.min(1, pct)));
+        if (rect.width <= 0) return 0;
+        const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+        const pct = (clientX - rect.left) / rect.width;
+        return Math.max(0, Math.min(1, pct));
+    }
+
+    function onPointerMove(e) {
+        if (!state.isDraggingProgress) return;
+        const pct = getProgressPct(e);
+        const fillPct = (pct * 100).toFixed(2) + '%';
+        dom.progressFill.style.width = fillPct;
+        dom.progressThumb.style.left = fillPct;
+        if (isFinite(dom.audio.duration) && dom.audio.duration > 0) {
+            dom.timeCurrent.textContent = formatTime(pct * dom.audio.duration);
+        }
+        seekTo(pct);
+    }
+
+    function onPointerUp(e) {
+        if (!state.isDraggingProgress) return;
+        state.isDraggingProgress = false;
+        try {
+            if (dom.progressBar.hasPointerCapture(e.pointerId)) {
+                dom.progressBar.releasePointerCapture(e.pointerId);
+            }
+        } catch (_) {}
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
+    }
+
+    dom.progressBar.addEventListener('pointerdown', (e) => {
+        state.isDraggingProgress = true;
+        try {
+            dom.progressBar.setPointerCapture(e.pointerId);
+        } catch (_) {}
+
+        const pct = getProgressPct(e);
+        const fillPct = (pct * 100).toFixed(2) + '%';
+        dom.progressFill.style.width = fillPct;
+        dom.progressThumb.style.left = fillPct;
+        if (isFinite(dom.audio.duration) && dom.audio.duration > 0) {
+            dom.timeCurrent.textContent = formatTime(pct * dom.audio.duration);
+        }
+        seekTo(pct);
+
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        window.addEventListener('pointerup', onPointerUp);
+        window.addEventListener('pointercancel', onPointerUp);
     });
 
     dom.albumCover.addEventListener('error', () => applyFallbackTheme());

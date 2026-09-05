@@ -402,27 +402,97 @@
     }
 }
 
-/* ── Hover: only on pointer devices ─────────────────── */
+/* ── Mobile Touch & Tactile Feedback ──────────────────────── */
 @media (hover: none) {
+    /* Reset sticky hover states caused by tap */
     .control-btn:hover {
-        background: none;
-        color: var(--muted);
+        background: var(--surface-alt);
+        color: var(--text);
+        transform: none;
     }
 
     .control-btn--play:hover {
         background: var(--accent);
+        color: #ffffff;
         transform: none;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
     }
 
     .spotify-btn:hover {
         transform: none;
+        box-shadow: var(--shadow-sm);
     }
 
     .btn-back:hover {
-        background: var(--surface-alt);
+        background: transparent;
+        border-color: var(--border);
     }
 
     .track-item:hover {
         background: transparent;
+    }
+
+    /* Tactile micro-animations on mobile touch (:active) */
+    .control-btn:active {
+        background: rgba(0, 0, 0, 0.08);
+        color: var(--accent);
+    }
+
+    .control-btn--play:active {
+        background: var(--accent-dark);
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.22);
+    }
+
+    .spotify-btn:active {
+        transform: scale(0.96);
+        opacity: 0.9;
+        box-shadow: var(--shadow-xs);
+        transition: transform 0.1s ease;
+    }
+
+    .btn-back:active {
+        transform: scale(0.90);
+        background: var(--surface);
+        border-color: rgba(0, 0, 0, 0.18);
+        transition: transform 0.1s ease;
+    }
+
+    .track-item:active {
+        background: var(--accent-soft);
+        transform: scale(0.985);
+        transition: transform 0.12s ease, background 0.12s ease;
+    }
+
+    .vinyl-item--center:active {
+        transform: scale(0.97);
+        transition: transform 0.15s ease;
+    }
+
+    .note-card:active {
+        transform: scale(0.99);
+        transition: transform 0.15s ease;
+    }
+}
+
+/* Also support desktop :active tactile press */
+@media (hover: hover) {
+    .control-btn:active {
+        transform: scale(0.94);
+    }
+
+    .control-btn--play:active {
+        transform: scale(0.95);
+    }
+
+    .spotify-btn:active {
+        transform: scale(0.97);
+    }
+
+    .btn-back:active {
+        transform: scale(0.92);
+    }
+
+    .track-item:active {
+        transform: scale(0.99);
     }
 }
