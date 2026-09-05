@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Ubuntu+Sans+Mono:wght@300;400;500&display=swap');
+
+:root {
+    /* ── Fonts ─────────────────────────────────────── */
+    --font-display: "Bricolage Grotesque", sans-serif;
+    --font-mono:    "Ubuntu Sans Mono", monospace;
+
+    /* ── Base palette ──────────────────────────────── */
+    --background:   #FCF9F4;
+    --surface:      #ffffff;
+    --surface-alt:  #f6f3ee;
+    --border:       rgba(0, 0, 0, 0.07);
+    --text:         #1a1714;
+    --muted:        #6b6560;
+    --faint:        #a89f98;
+
+    /* ── Dynamic accent (overridden by theme.js) ───── */
+    --accent:          #8f0018;
+    --accent-dark:     #5c0010;
+    --accent-light:    #c2001f;
+    --accent-soft:     rgba(143, 0, 24, 0.10);
+    --accent-contrast: #ffffff;
+
+    /* ── Vinyl colors (derived from accent) ─────────── */
+    --vinyl-color:  #1a1714;
+    --vinyl-dark:   #0d0b09;
+    --vinyl-label:  var(--accent);
+
+    /* ── Radii ─────────────────────────────────────── */
+    --radius-xs:  4px;
+    --radius-sm:  8px;
+    --radius-md:  14px;
+    --radius-lg:  22px;
+    --radius-xl:  32px;
+    --radius-pill: 999px;
+
+    /* ── Shadows ───────────────────────────────────── */
+    --shadow-xs:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-sm:   0 2px 8px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md:   0 6px 24px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-lg:   0 16px 48px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.07);
+    --shadow-vinyl: 0 24px 64px rgba(0,0,0,0.35), 0 8px 20px rgba(0,0,0,0.20);
+
+    /* ── Transitions ───────────────────────────────── */
+    --transition-fast:   150ms ease;
+    --transition-base:   240ms ease;
+    --transition-slow:   400ms ease;
+
+    /* ── Spacing scale ─────────────────────────────── */
+    --space-1:  4px;
+    --space-2:  8px;
+    --space-3:  12px;
+    --space-4:  16px;
+    --space-5:  20px;
+    --space-6:  24px;
+    --space-8:  32px;
+    --space-10: 40px;
+    --space-12: 48px;
+}

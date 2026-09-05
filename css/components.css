@@ -1,0 +1,661 @@
+/* ═══════════════════════════════════════════════════════
+   COMPONENTS
+═══════════════════════════════════════════════════════ */
+
+/* ── PLAYLIST PANEL ──────────────────────────────────── */
+
+.playlist-header {
+    margin-bottom: var(--space-6);
+    flex-shrink: 0;
+}
+
+.playlist-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: var(--space-2);
+}
+
+.playlist-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+    transition: color var(--transition-slow);
+}
+
+/* ── Track list ─────────────────────────────────────── */
+.track-list-container {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: var(--space-4);
+    display: flex;
+    flex-direction: column;
+}
+
+.track-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.track-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.track-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.track-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: var(--radius-pill);
+}
+
+/* ── Track item ─────────────────────────────────────── */
+.track-item {
+    display: grid;
+    grid-template-columns: 26px 42px 1fr auto;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-3);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    position: relative;
+    opacity: 0; /* animated in by GSAP */
+    transform: translateY(8px);
+}
+
+.track-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.track-item.is-playing {
+    background: var(--accent-soft);
+}
+
+.track-item.is-playing .track-title {
+    color: var(--accent);
+}
+
+.track-item.is-playing .track-number {
+    color: var(--accent);
+}
+
+.track-number {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--faint);
+    text-align: right;
+    font-weight: 400;
+    transition: color var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.track-cover-thumb {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    background: var(--surface-alt);
+    flex-shrink: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.track-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+}
+
+.track-title {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color var(--transition-fast);
+    line-height: 1.3;
+}
+
+.track-meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 1px;
+    letter-spacing: 0.01em;
+}
+
+.track-duration {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--faint);
+    flex-shrink: 0;
+    font-weight: 400;
+}
+
+/* ── PLAYER PANEL ────────────────────────────────────── */
+
+.player-panel-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: var(--space-5);
+}
+
+/* ── Vinyl Carousel (List View) ───────────────────────── */
+.vinyl-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    width: 100%;
+    position: relative;
+    padding: var(--space-4) 0;
+    margin-bottom: var(--space-4);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.vinyl-item {
+    position: relative;
+    border: none;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, opacity;
+}
+
+.vinyl-item--center {
+    cursor: pointer;
+    z-index: 2;
+    /* Positioning context so .vinyl-shine can overlay the disc */
+    position: relative;
+}
+
+.vinyl-item--center:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 50%;
+}
+
+.vinyl-disc {
+    border-radius: 50%;
+    background:
+        /* Subtle arc-shaped glints that rotate with the disc — realistic iridescent sheen */
+        conic-gradient(
+            from 0deg at 50% 50%,
+            rgba(255,255,255,0) 0deg,
+            rgba(255,255,255,0.14) 28deg,
+            rgba(255,255,255,0) 56deg,
+            rgba(255,255,255,0) 175deg,
+            rgba(255,255,255,0.09) 200deg,
+            rgba(255,255,255,0) 225deg,
+            rgba(255,255,255,0) 360deg
+        ),
+        radial-gradient(circle at center, transparent 22%, var(--vinyl-dark) 22.5%) center / 100% 100%,
+        repeating-radial-gradient(
+            circle at center,
+            var(--vinyl-color) 0px,
+            var(--vinyl-color) 2.5px,
+            var(--vinyl-dark) 3px,
+            var(--vinyl-dark) 6px
+        );
+    box-shadow: var(--shadow-vinyl);
+    position: relative;
+    will-change: transform;
+}
+
+/* Center hole for all discs */
+.vinyl-disc::after {
+    content: '';
+    position: absolute;
+    width: 8%;
+    height: 8%;
+    background: var(--background);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.vinyl-disc--main {
+    width: clamp(180px, 38vw, 240px);
+    height: clamp(180px, 38vw, 240px);
+}
+
+.vinyl-disc--side {
+    width: clamp(90px, 18vw, 130px);
+    height: clamp(90px, 18vw, 130px);
+    opacity: 0.3;
+}
+
+/* Dynamic Label inner ring */
+.vinyl-disc::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at center,
+        var(--accent-light) 0%,
+        var(--accent) 40%,
+        var(--accent-dark) 100%
+    );
+    width: 42%;
+    height: 42%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: background var(--transition-slow);
+}
+
+/* ── Vinyl light-reflection overlay ─────────────────── */
+/*
+ * .vinyl-shine is a SIBLING of the rotating disc element, so it stays
+ * fixed relative to the viewport — simulating a static ambient light source
+ * reflecting off the surface of a spinning vinyl record.
+ */
+.vinyl-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    /* Top-left directional highlight — mimics a lamp at ~130 degrees */
+    background:
+        radial-gradient(
+            ellipse 55% 45% at 30% 22%,
+            rgba(255,255,255,0.28) 0%,
+            rgba(255,255,255,0.10) 35%,
+            transparent 70%
+        ),
+        radial-gradient(
+            circle at 65% 75%,
+            rgba(255,255,255,0.06) 0%,
+            transparent 50%
+        );
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* ── Player wrapper (positions vinyl + its shine together) */
+.vinyl-player-wrap {
+    /* Inherits same sizing and offset as the old standalone .vinyl--player */
+    width: clamp(150px, 28vw, 200px);
+    height: clamp(150px, 28vw, 200px);
+    position: relative;
+    right: clamp(25px, 6vw, 50px);
+    flex-shrink: 0;
+}
+
+.vinyl-shine--player {
+    /* Uses inset:0 inside the wrap so it covers the vinyl exactly */
+    z-index: 4;
+}
+
+/* ── Player View Vinyl + Cover ────────────────────────── */
+.vinyl-cover-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.album-cover {
+    width: clamp(150px, 28vw, 200px);
+    height: clamp(150px, 28vw, 200px);
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    background: var(--surface-alt);
+    position: relative;
+    z-index: 2;
+}
+
+#album-cover-wrap {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.vinyl--player {
+    /* Fill the .vinyl-player-wrap entirely */
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    border-radius: 50%;
+    background:
+        conic-gradient(
+            from 0deg at 50% 50%,
+            rgba(255,255,255,0) 0deg,
+            rgba(255,255,255,0.14) 28deg,
+            rgba(255,255,255,0) 56deg,
+            rgba(255,255,255,0) 175deg,
+            rgba(255,255,255,0.09) 200deg,
+            rgba(255,255,255,0) 225deg,
+            rgba(255,255,255,0) 360deg
+        ),
+        radial-gradient(circle at center, transparent 22%, var(--vinyl-dark) 22.5%) center / 100% 100%,
+        repeating-radial-gradient(
+            circle at center,
+            var(--vinyl-color) 0px,
+            var(--vinyl-color) 2.5px,
+            var(--vinyl-dark) 3px,
+            var(--vinyl-dark) 6px
+        );
+    box-shadow: var(--shadow-vinyl);
+    will-change: transform;
+}
+
+.vinyl--player::after {
+    content: '';
+    position: absolute;
+    width: 8%;
+    height: 8%;
+    background: var(--background);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.vinyl--player::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at center,
+        var(--accent-light) 0%,
+        var(--accent) 40%,
+        var(--accent-dark) 100%
+    );
+    width: 42%;
+    height: 42%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: background var(--transition-slow);
+}
+
+/* ── Track info in player ────────────────────────────── */
+.player-info {
+    flex-shrink: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.player-track-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.5vw, 1.85rem);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.15;
+    transition: color var(--transition-slow);
+    margin-bottom: var(--space-1);
+}
+
+.player-track-meta {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+}
+
+/* ── Progress bar ────────────────────────────────────── */
+.progress-wrap {
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.progress-bar-container {
+    position: relative;
+    height: 3px;
+    background: var(--border);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    margin-bottom: var(--space-2);
+}
+
+.progress-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--accent);
+    border-radius: var(--radius-pill);
+    width: 0%;
+    transition: background var(--transition-slow);
+    pointer-events: none;
+}
+
+.progress-bar-thumb {
+    position: absolute;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    left: 0%;
+    opacity: 0;
+    transition: opacity var(--transition-fast), background var(--transition-slow);
+    pointer-events: none;
+}
+
+.progress-bar-container:hover .progress-bar-thumb {
+    opacity: 1;
+}
+
+.progress-times {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time-current,
+.time-label,
+.time-total {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.time-label {
+    color: var(--faint);
+    opacity: 0.5;
+    font-size: 0.625rem;
+}
+
+/* ── Controls ─────────────────────────────────────────── */
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-6);
+    flex-shrink: 0;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--muted);
+    transition: color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+}
+
+.control-btn:hover {
+    color: var(--text);
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.control-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.control-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.control-btn--play {
+    width: 56px;
+    height: 56px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    transition: background var(--transition-slow), transform var(--transition-fast), box-shadow var(--transition-fast);
+    will-change: transform;
+}
+
+.control-btn--play:hover {
+    background: var(--accent-light);
+    color: var(--accent-contrast);
+    transform: scale(1.06);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.20);
+}
+
+.control-btn--play svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* ── Note card ──────────────────────────────────────── */
+.note-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    flex: 0 0 auto;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 100%;
+}
+
+.note-card.is-hidden {
+    display: none;
+}
+
+.note-card-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    transition: color var(--transition-slow);
+    flex-shrink: 0;
+}
+
+.note-card-text {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.7;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+/* ── Spotify button ──────────────────────────────────── */
+.spotify-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-3) var(--space-6);
+    background: var(--accent);
+    color: var(--accent-contrast);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: background var(--transition-slow), transform var(--transition-fast), opacity var(--transition-fast);
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.spotify-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.spotify-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.spotify-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.spotify-btn[disabled],
+.spotify-btn.is-disabled {
+    opacity: 0.45;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* ── Loading overlay ─────────────────────────────────── */
+#loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.4s ease;
+}
+
+#loading-overlay.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

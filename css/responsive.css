@@ -1,0 +1,359 @@
+/*
+ * responsive.css
+ * Mobile-first adjustments and desktop split overrides
+ */
+
+/* ── Desktop split refinements ─────────────────────── */
+@media (min-width: 1024px) {
+    .vinyl-disc--main {
+        width: clamp(160px, 14vw, 220px);
+        height: clamp(160px, 14vw, 220px);
+    }
+
+    .vinyl-disc--side {
+        width: clamp(80px, 7vw, 120px);
+        height: clamp(80px, 7vw, 120px);
+    }
+
+    .album-cover {
+        width: clamp(160px, 14vw, 220px);
+        height: clamp(160px, 14vw, 220px);
+    }
+
+    .vinyl-player-wrap {
+        width: clamp(160px, 14vw, 220px);
+        height: clamp(160px, 14vw, 220px);
+        right: clamp(30px, 4vw, 55px);
+    }
+
+    .list-track-title {
+        font-size: clamp(1.6rem, 2.5vw, 2.25rem);
+    }
+
+    .vinyl-carousel {
+        margin-bottom: var(--space-4);
+    }
+
+    .view-player-inner {
+        gap: var(--space-4);
+    }
+
+    .player-track-title {
+        font-size: clamp(1.3rem, 1.8vw, 1.75rem);
+    }
+}
+
+/* ── Large desktop ─────────────────────────────────── */
+@media (min-width: 1440px) {
+    .vinyl-disc--main {
+        width: 240px;
+        height: 240px;
+    }
+
+    .vinyl-disc--side {
+        width: 120px;
+        height: 120px;
+    }
+
+    .album-cover {
+        width: 230px;
+        height: 230px;
+    }
+
+    .vinyl-player-wrap {
+        width: 230px;
+        height: 230px;
+        right: 55px;
+    }
+
+    .view-list-inner {
+        max-width: 560px;
+    }
+
+    .view-player-inner {
+        max-width: 440px;
+    }
+}
+
+/* ── Tablet / mid (mobile SPA mode) ────────────────── */
+@media (max-width: 1023px) and (min-width: 721px) {
+    .view {
+        padding: var(--space-6) var(--space-6) calc(var(--space-6) * 2);
+    }
+
+    .view-list-inner {
+        max-width: 560px;
+    }
+
+    .view-player-inner {
+        max-width: 460px;
+        padding-top: var(--space-10);
+    }
+
+    .vinyl--player {
+        right: clamp(25px, 5vw, 45px);
+    }
+
+    .album-cover {
+        width: clamp(170px, 30vw, 220px);
+        height: clamp(170px, 30vw, 220px);
+    }
+
+    .vinyl-player-wrap {
+        width: clamp(170px, 30vw, 220px);
+        height: clamp(170px, 30vw, 220px);
+        right: clamp(25px, 5vw, 45px);
+    }
+}
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 720px) {
+    .view {
+        padding: var(--space-4) var(--space-4) calc(var(--space-4) * 2);
+    }
+
+    /* List View adjustments */
+    .vinyl-carousel {
+        gap: var(--space-2);
+        padding: var(--space-2) 0;
+        margin-bottom: var(--space-3);
+    }
+
+    .vinyl-disc--main {
+        width: clamp(160px, 42vw, 210px);
+        height: clamp(160px, 42vw, 210px);
+    }
+
+    .vinyl-disc--side {
+        width: clamp(80px, 18vw, 110px);
+        height: clamp(80px, 18vw, 110px);
+    }
+
+    .list-track-title {
+        font-size: clamp(1.6rem, 6vw, 2.25rem);
+    }
+
+    .list-track-display {
+        min-height: 64px;
+        margin-bottom: var(--space-4);
+    }
+
+    .list-cta-header {
+        margin-bottom: var(--space-4);
+    }
+
+    /* Player View adjustments */
+    .view-player-inner {
+        padding-top: var(--space-10);
+        gap: var(--space-4);
+    }
+
+    .album-cover {
+        width: clamp(140px, 35vw, 180px);
+        height: clamp(140px, 35vw, 180px);
+    }
+
+    .vinyl-player-wrap {
+        width: clamp(140px, 35vw, 180px);
+        height: clamp(140px, 35vw, 180px);
+        right: clamp(18px, 4vw, 35px);
+    }
+
+    .player-track-title {
+        font-size: 1.35rem;
+    }
+
+    .controls {
+        gap: var(--space-5);
+    }
+
+    .control-btn--play {
+        width: 52px;
+        height: 52px;
+    }
+
+    .track-list-header {
+        margin: 0 0 var(--space-3) 0;
+    }
+}
+
+/* ── Small mobile (Galaxy S8 360px, iPhone SE 375px) ── */
+@media (max-width: 420px) {
+    .view {
+        padding: var(--space-3) var(--space-3) var(--space-6);
+    }
+
+    .track-item {
+        grid-template-columns: 22px 36px 1fr auto;
+        gap: var(--space-2);
+        padding: var(--space-2) var(--space-2);
+    }
+
+    .track-cover-thumb {
+        width: 36px;
+        height: 36px;
+    }
+
+    .track-title {
+        font-size: 0.85rem;
+    }
+
+    .track-meta {
+        font-size: 0.65rem;
+    }
+
+    .track-duration {
+        font-size: 0.7rem;
+    }
+
+    .list-track-title {
+        font-size: clamp(1.4rem, 7vw, 1.8rem);
+    }
+
+    .list-track-meta {
+        font-size: 0.78rem;
+    }
+
+    .vinyl-disc--main {
+        width: clamp(150px, 42vw, 180px);
+        height: clamp(150px, 42vw, 180px);
+    }
+
+    .vinyl-disc--side {
+        width: clamp(70px, 18vw, 90px);
+        height: clamp(70px, 18vw, 90px);
+    }
+
+    .album-cover {
+        width: clamp(130px, 36vw, 160px);
+        height: clamp(130px, 36vw, 160px);
+    }
+
+    .vinyl-player-wrap {
+        width: clamp(130px, 36vw, 160px);
+        height: clamp(130px, 36vw, 160px);
+        right: clamp(14px, 4vw, 25px);
+    }
+
+    .player-track-title {
+        font-size: 1.2rem;
+    }
+
+    .player-track-meta {
+        font-size: 0.72rem;
+    }
+
+    .cta-label {
+        font-size: 0.6rem;
+    }
+
+    .spotify-btn {
+        font-size: 0.65rem;
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .note-card {
+        padding: var(--space-4);
+    }
+
+    .note-card-title {
+        font-size: 1rem;
+    }
+
+    .note-card-text {
+        font-size: 0.72rem;
+        -webkit-line-clamp: 3;
+    }
+
+    .controls {
+        gap: var(--space-4);
+    }
+
+    .control-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .control-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .control-btn--play {
+        width: 48px;
+        height: 48px;
+    }
+
+    .btn-back {
+        width: 36px;
+        height: 36px;
+    }
+
+    .btn-back svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* ── Extra small mobile (320px) ────────────────────── */
+@media (max-width: 340px) {
+    .track-item {
+        grid-template-columns: 20px 32px 1fr auto;
+        gap: 6px;
+    }
+
+    .track-cover-thumb {
+        width: 32px;
+        height: 32px;
+    }
+
+    .track-title {
+        font-size: 0.8rem;
+    }
+
+    .vinyl-disc--main {
+        width: 140px;
+        height: 140px;
+    }
+
+    .vinyl-disc--side {
+        width: 65px;
+        height: 65px;
+    }
+
+    .album-cover {
+        width: 120px;
+        height: 120px;
+    }
+
+    .vinyl-player-wrap {
+        width: 120px;
+        height: 120px;
+        right: 12px;
+    }
+}
+
+/* ── Hover: only on pointer devices ─────────────────── */
+@media (hover: none) {
+    .control-btn:hover {
+        background: none;
+        color: var(--muted);
+    }
+
+    .control-btn--play:hover {
+        background: var(--accent);
+        transform: none;
+    }
+
+    .spotify-btn:hover {
+        transform: none;
+    }
+
+    .btn-back:hover {
+        background: var(--surface-alt);
+    }
+
+    .track-item:hover {
+        background: transparent;
+    }
+}

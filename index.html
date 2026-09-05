@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Vinyl Mix — reproductor musical visual con temática dinámica basada en la portada del álbum.">
+    <title>Vinyl Mix</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Ubuntu+Sans+Mono:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/variables.css">
+    <link rel="stylesheet" href="./css/layout.css">
+    <link rel="stylesheet" href="./css/components.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+
+    <!-- GSAP core + Observer plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Observer.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay" aria-hidden="true">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-state" role="alert" aria-live="assertive"></div>
+
+    <!-- Hidden audio element -->
+    <audio id="audio" preload="metadata"></audio>
+
+    <!-- Hidden image for color analysis (canvas needs a loaded img element) -->
+    <img id="analysis-img" src="" alt="" aria-hidden="true" crossorigin="anonymous"
+        style="display:none;position:absolute;pointer-events:none;">
+
+    <!-- ═════════════════════════════════════════════════
+         VIEW 1 — VINYL LIST
+    ═════════════════════════════════════════════════ -->
+    <div id="view-list" class="view" aria-label="Vinyl Mix — Lista de vinilos">
+        <div class="view-list-inner">
+
+            <!-- CTA header -->
+            <div class="list-cta-header" aria-hidden="true">
+                <span class="cta-dot">✦</span>
+                <p class="cta-label" id="cta-label">HAZ CLICK PARA REPRODUCIR</p>
+                <span class="cta-dot">✦</span>
+            </div>
+
+            <!-- Current track info (above carousel) -->
+            <div class="list-track-display" id="list-track-display">
+                <h1 id="list-track-title" class="list-track-title">—</h1>
+                <p id="list-track-meta" class="list-track-meta">—</p>
+            </div>
+
+            <!-- Vinyl carousel (swipeable, Observer target) -->
+            <div id="vinyl-carousel" class="vinyl-carousel" role="region" aria-label="Carrusel de vinilos">
+
+                <!-- Previous vinyl -->
+                <div id="vinyl-prev" class="vinyl-item" aria-hidden="true">
+                    <div class="vinyl-disc vinyl-disc--side"></div>
+                </div>
+
+                <!-- Center vinyl — clickable, navigates to player -->
+                <button id="vinyl-center" class="vinyl-item vinyl-item--center" type="button"
+                    aria-label="Abrir reproductor">
+                    <div id="vinyl-disc-main" class="vinyl-disc vinyl-disc--main"></div>
+                    <!-- Static light reflection overlay (does not rotate with disc) -->
+                    <div class="vinyl-shine" aria-hidden="true"></div>
+                </button>
+
+                <!-- Next vinyl -->
+                <div id="vinyl-next" class="vinyl-item" aria-hidden="true">
+                    <div class="vinyl-disc vinyl-disc--side"></div>
+                </div>
+
+            </div>
+
+            <!-- Track list container (Box encapsulation) -->
+            <div class="track-list-container">
+                <!-- Track list divider -->
+                <div class="track-list-header" aria-hidden="true">
+                    <span class="track-list-label">Mix Track</span>
+                </div>
+
+                <!-- Playlist -->
+                <ul id="track-list" class="track-list" role="list" aria-label="Lista de canciones"></ul>
+            </div>
+
+            <!-- Spotify button -->
+            <a id="spotify-btn" class="spotify-btn is-disabled" aria-label="Escuchar en Spotify" aria-disabled="true"
+                target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <path
+                        d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+                </svg>
+                <span>Escuchar en Spotify</span>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════
+         VIEW 2 — PLAYER
+    ═════════════════════════════════════════════════ -->
+    <div id="view-player" class="view" aria-label="Reproductor">
+        <div class="view-player-inner">
+
+            <!-- Back button -->
+            <div class="player-topbar">
+                <button id="btn-back" class="btn-back" type="button" aria-label="Volver a la lista">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Album cover + spinning vinyl -->
+            <div class="player-cover-section">
+                <div class="vinyl-cover-row" aria-hidden="true">
+                    <div id="album-cover-wrap">
+                        <img id="album-cover" class="album-cover" src="" alt="Album cover" draggable="false">
+                    </div>
+                    <div class="vinyl-player-wrap">
+                        <div id="vinyl-player" class="vinyl vinyl--player" role="presentation"></div>
+                        <!-- Static light reflection (does not rotate with disc) -->
+                        <div class="vinyl-shine vinyl-shine--player" aria-hidden="true"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track info -->
+            <div class="player-info">
+                <h2 id="player-title" class="player-track-title">—</h2>
+                <p id="player-meta" class="player-track-meta">—</p>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="progress-wrap">
+                <div id="progress-bar" class="progress-bar-container" role="slider"
+                    aria-label="Progreso de reproducción" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+                    tabindex="0">
+                    <div id="progress-fill" class="progress-bar-fill"></div>
+                    <div id="progress-thumb" class="progress-bar-thumb"></div>
+                </div>
+                <div class="progress-times">
+                    <span id="time-current" class="time-current">0:00</span>
+                    <span class="time-label">ANALOG STEREO</span>
+                    <span id="time-total" class="time-total">0:00</span>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls" role="group" aria-label="Controles de reproducción">
+                <button id="btn-prev" class="control-btn" type="button" aria-label="Canción anterior">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+                    </svg>
+                </button>
+                <button id="btn-play" class="control-btn control-btn--play" type="button" aria-label="Reproducir">
+                    <svg id="icon-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                        focusable="false">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <svg id="icon-pause" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                        focusable="false" style="display:none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                    </svg>
+                </button>
+                <button id="btn-next" class="control-btn" type="button" aria-label="Siguiente canción">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <path d="M6 18l8.5-6L6 6v12zm8.5-6L23 6v12z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Note card -->
+            <div id="note-card" class="note-card is-hidden" aria-live="polite">
+                <h3 id="note-title" class="note-card-title">Nota</h3>
+                <p id="note-text" class="note-card-text"></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JS entry point -->
+    <script type="module" src="./js/app.js"></script>
+
+</body>
+
+</html>

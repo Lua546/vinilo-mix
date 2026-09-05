@@ -1,0 +1,269 @@
+/*
+ * layout.css
+ * Two-view SPA layout: List view and Player view
+ * Desktop >=1024px: side-by-side split
+ * Mobile <1024px: toggle between views (SPA)
+ */
+
+html, body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    font-family: var(--font-display);
+    transition: background var(--transition-slow);
+}
+
+/* ── Base View Container ───────────────────────────── */
+.view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--space-6) var(--space-4) calc(var(--space-6) * 2);
+    box-sizing: border-box;
+    will-change: transform, opacity;
+    background: var(--background);
+}
+
+.view.is-active {
+    display: block;
+}
+
+/* ── View 1: List ───────────────────────────────────── */
+
+.view-list-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* List CTA Header */
+.list-cta-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    opacity: 0.5;
+}
+
+.cta-dot {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--faint);
+}
+
+.cta-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+}
+
+/* List Track Display */
+.list-track-display {
+    text-align: center;
+    margin-bottom: var(--space-5);
+    min-height: 72px;
+}
+
+.list-track-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: var(--space-1);
+    color: var(--accent);
+    transition: color var(--transition-slow);
+}
+
+.list-track-meta {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+}
+
+/* ── View 2: Player ─────────────────────────────────── */
+
+.view-player-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    justify-content: center;
+    padding-top: var(--space-10);
+    gap: var(--space-5);
+}
+
+.player-topbar {
+    position: absolute;
+    top: var(--space-2);
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.btn-back {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn-back:hover {
+    background: var(--surface);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+.btn-back svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--text);
+}
+
+.player-cover-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ── Track List Header (List View) ─────────────────── */
+
+.track-list-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0 0 var(--space-4) 0;
+}
+
+.track-list-label {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+}
+
+.track-list-rule {
+    flex-grow: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+.track-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-bottom: var(--space-6);
+}
+
+/* ── Desktop Split Layout ──────────────────────────── */
+
+@media (min-width: 1024px) {
+    html, body {
+        overflow: hidden;
+    }
+
+    body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 100vh;
+    }
+
+    /* Utility elements — remove from grid flow */
+    #loading-overlay {
+        position: fixed;
+        grid-column: 1 / -1;
+        grid-row: 1 / -1;
+    }
+
+    #error-state {
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+    }
+
+    #audio,
+    #analysis-img {
+        position: fixed;
+        pointer-events: none;
+    }
+
+    /* Both views always visible on desktop */
+    .view {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+    }
+
+    #view-list {
+        grid-column: 1;
+        grid-row: 1;
+        border-right: 1px solid var(--border);
+        padding: var(--space-8) var(--space-6);
+    }
+
+    #view-player {
+        grid-column: 2;
+        grid-row: 1;
+        padding: var(--space-8) var(--space-6);
+    }
+
+    .view-list-inner {
+        max-width: 520px;
+        height: 100%;
+    }
+
+    .view-player-inner {
+        max-width: 420px;
+        padding-top: var(--space-8);
+        justify-content: center;
+    }
+
+    /* Hide back button on desktop — both panels always visible */
+    .player-topbar {
+        display: none;
+    }
+
+    /* Player info centered on desktop */
+    .player-info {
+        text-align: center;
+        width: 100%;
+    }
+
+    .progress-wrap {
+        width: 100%;
+    }
+
+    .note-card {
+        width: 100%;
+    }
+}

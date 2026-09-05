@@ -1,0 +1,152 @@
+[
+    {
+        "id": 1,
+        "title": "All I Need",
+        "artist": "Radiohead",
+        "album": "In Rainbows",
+        "cover": "./assets/albums/all-i-need.jpg",
+        "audio": "./assets/audio/all-i-need.mp3",
+        "duration": "3:49",
+        "note": "Esta canción me recuerda aquella tarde lluviosa en que todo parecía detenerse. Cada nota cae como una gota pausada sobre el asfalto gris, y me devuelve a ese instante exacto donde el tiempo dejó de importar."
+    },
+    {
+        "id": 2,
+        "title": "Eres para Mí",
+        "artist": "Julieta Venegas",
+        "album": "Limón y Sal",
+        "cover": "./assets/albums/eres-para-mi.jpg",
+        "audio": "./assets/audio/eres-para-mi.mp3",
+        "duration": "3:12",
+        "note": "Hay canciones que no necesitan explicación. Esta es una de ellas. La escuché por primera vez sin querer, y desde entonces no pude quitármela de la cabeza. Dice exactamente lo que yo no sabía cómo decir."
+    },
+    {
+        "id": 3,
+        "title": "Jigsaw Falling Into Place",
+        "artist": "Radiohead",
+        "album": "In Rainbows",
+        "cover": "./assets/albums/all-i-need.jpg",
+        "audio": "./assets/audio/jigsaw-falling-into-place.mp3",
+        "duration": "4:09",
+        "note": "Todo encaja cuando suena esta canción. Como si el caos del día se ordenara de a poco, pieza por pieza, hasta que el mundo vuelve a tener sentido. Thom Yorke lo sabe todo sobre el vértigo cotidiano."
+    },
+    {
+        "id": 4,
+        "title": "Everlong",
+        "artist": "Foo Fighters",
+        "album": "The Colour and the Shape",
+        "cover": "./assets/albums/everlong.jpg",
+        "audio": "./assets/audio/everlong.mp3",
+        "duration": "4:11",
+        "note": "Si pudiera elegir una sola canción para llevar al fin del mundo, elegiría esta. No por lo que dice sino por lo que hace: levanta algo dentro del pecho y lo sostiene ahí, suspendido, hasta el último acorde."
+    },
+    {
+        "id": 5,
+        "title": "See You Again",
+        "artist": "Tyler, The Creator",
+        "album": "Flower Boy",
+        "cover": "./assets/albums/see-you-again.jpg",
+        "audio": "./assets/audio/see-you-again.mp3",
+        "duration": "3:01",
+        "note": "Una tarde de verano, ventanas abiertas, el calor pegajoso y esta canción flotando en el aire. Tyler construyó algo delicado aquí, casi frágil, como si el amor fuera siempre a punto de romperse."
+    },
+    {
+        "id": 6,
+        "title": "Lovers Rock",
+        "artist": "TV Girl",
+        "album": "French Exit",
+        "cover": "./assets/albums/lovers-rock.jpg",
+        "audio": "./assets/audio/lovers-rock.mp3",
+        "duration": "3:34",
+        "note": "Esta canción huele a película de los años noventa que nadie terminó de ver. TV Girl sabe exactamente cómo hacer que la nostalgia duela de la manera más dulce posible. La escucho y me pierdo."
+    },
+    {
+        "id": 7,
+        "title": "All Night Forever",
+        "artist": "TWRP",
+        "album": "Together Through Time",
+        "cover": "./assets/albums/all-night-forever.jpg",
+        "audio": "./assets/audio/all-night-forever.mp3",
+        "duration": "4:49",
+        "note": "Hay noches que merecen una banda sonora propia. Esta es exactamente esa banda sonora. Brillante, veloz, imparable. Me recuerda que algunas horas no deben terminar nunca."
+    },
+    {
+        "id": 8,
+        "title": "505",
+        "artist": "Arctic Monkeys",
+        "album": "Favourite Worst Nightmare",
+        "cover": "./assets/albums/505.jpg",
+        "audio": "./assets/audio/505.mp3",
+        "duration": "4:14",
+        "note": "El número 505 ya no es solo un número. Es una habitación, un momento, una promesa hecha a las tres de la mañana. Alex Turner escribe como si conociera todos los secretos que uno guarda en silencio."
+    },
+    {
+        "id": 9,
+        "title": "Tabú",
+        "artist": "Gustavo Cerati",
+        "album": "Bocanada",
+        "cover": "./assets/albums/tabu.jpg",
+        "audio": "./assets/audio/tabu.mp3",
+        "duration": "4:49",
+        "note": "Cerati construyó algo eterno con esta canción. Hay una tensión suave en cada compás, como la electricidad antes de una tormenta. La escucho y el tiempo se vuelve extrañamente denso y luminoso."
+    },
+    {
+        "id": 10,
+        "title": "I Wanna Be Yours",
+        "artist": "Arctic Monkeys",
+        "album": "AM",
+        "cover": "./assets/albums/i-wanna-be-yours.jpg",
+        "audio": "./assets/audio/i-wanna-be-yours.mp3",
+        "duration": "3:04",
+        "note": "Pocas canciones de amor son tan directas y tan extrañas al mismo tiempo. Turner toma un poema de John Cooper Clarke y lo convierte en algo que duele de una manera completamente nueva. Simple y devastador."
+    },
+    {
+        "id": 11,
+        "title": "Heart To Heart",
+        "artist": "Mac DeMarco",
+        "album": "Here Comes The Cowboy",
+        "cover": "./assets/albums/heart-to-heart.jpg",
+        "audio": "./assets/audio/heart-to-heart.mp3",
+        "duration": "3:32",
+        "note": "Mac DeMarco suena siempre como una tarde de domingo que no quiere terminar. Esta canción en particular me da la sensación de que el mundo está bien, aunque no lo esté. Una mentira hermosa y necesaria."
+    },
+    {
+        "id": 12,
+        "title": "Lonely Day",
+        "artist": "System Of A Down",
+        "album": "Hypnotize",
+        "cover": "./assets/albums/lonely-day.jpg",
+        "audio": "./assets/audio/lonely-day.mp3",
+        "duration": "2:49",
+        "note": "Hay días que simplemente son más pesados que otros. Para esos días existe esta canción. No la escucho para animarme sino para saber que alguien más entendió exactamente cómo se siente la soledad aguda."
+    },
+    {
+        "id": 13,
+        "title": "Souk Eye",
+        "artist": "Gorillaz",
+        "album": "The Now Now",
+        "cover": "./assets/albums/souk-eye.jpg",
+        "audio": "./assets/audio/souk-eye.mp3",
+        "duration": "4:35",
+        "note": "Gorillaz tiene algo que pocos tienen: la capacidad de sonar triste y hermoso al mismo tiempo. Esta canción es un viaje lento por un paisaje desconocido. Cada vez que termina, siento que acabo de llegar a algún lado."
+    },
+    {
+        "id": 14,
+        "title": "From The Start",
+        "artist": "Laufey",
+        "album": "Bewitched",
+        "cover": "./assets/albums/from-the-start.jpg",
+        "audio": "./assets/audio/from-the-start.mp3",
+        "duration": "2:50",
+        "note": "Laufey tiene una voz que parece salida de otra época, de esas tardes de jazz que solo existen en las películas. Esta canción me detiene cada vez que la escucho. Todo lo demás puede esperar."
+    },
+    {
+        "id": 15,
+        "title": "I Just Threw Out The Love Of My Dreams",
+        "artist": "Weezer",
+        "album": "Pinkerton",
+        "cover": "./assets/albums/i-just-threw-out-the-love-of-my-dreams.jpg",
+        "audio": "./assets/audio/i-just-threw-out-the-love-of-my-dreams.mp3",
+        "duration": "2:38",
+        "note": "El título ya dice todo lo que hay que decir. Weezer lo convirtió en algo agridulce, casi cómico, pero con una honestidad brutal debajo. A veces uno simplemente tira lo mejor que tiene sin darse cuenta."
+    }
+]
