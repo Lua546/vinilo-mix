@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupModules();
         setupControls();
         setupKeyboard();
+        setupNavigationHistory();
         setupDesktopMode();
         
         // Initial setup
@@ -146,7 +147,7 @@ function setupModules() {
 
 // ── Navigation (SPA Routing) ──────────────────────────
 
-async function navigateTo(viewId) {
+async function navigateTo(viewId, updateHistory = true) {
     // On desktop, both views are always visible — skip SPA transitions
     if (state.isDesktop) {
         if (viewId === 'player' && !state.isPlaying) {
@@ -161,6 +162,10 @@ async function navigateTo(viewId) {
 
     if (viewId === 'player') {
         state.currentView = 'player';
+        // Push state for player if requested
+        if (updateHistory) {
+            history.pushState({ view: 'player' }, '', '#player');
+        }
         // Auto-play when opening player if not already playing
         if (!state.isPlaying) {
             play();
@@ -168,11 +173,36 @@ async function navigateTo(viewId) {
         await animateViewTransition(dom.viewList, dom.viewPlayer, 'forward');
     } else {
         state.currentView = 'list';
+        // If transitioning back to list, keep history in sync
+        if (updateHistory && history.state?.view === 'player') {
+            history.back();
+        }
         await animateViewTransition(dom.viewPlayer, dom.viewList, 'backward');
     }
 
     state.isAnimating = false;
 }
+
+function setupNavigationHistory() {
+    // Initialize base history state for the list view
+    if (!history.state || !history.state.view) {
+        history.replaceState({ view: 'list' }, '', window.location.pathname + window.location.search);
+    }
+
+    // Handle browser/system back and forward buttons
+    window.addEventListener('popstate', (event) => {
+        if (state.isDesktop) return;
+
+        const targetView = event.state?.view === 'player' || window.location.hash === '#player'
+            ? 'player'
+            : 'list';
+
+        if (state.currentView !== targetView) {
+            navigateTo(targetView, false);
+        }
+    });
+}
+
 
 // ── Track selection ───────────────────────────────────
 
