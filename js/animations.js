@@ -39,39 +39,105 @@ export function pauseVinyl() {
 export function animateCarouselChange(centerDisc, direction, onMidpoint) {
     return new Promise((resolve) => {
         const carousel = document.getElementById('vinyl-carousel');
+        const center = document.getElementById('vinyl-center');
+        const prev = document.getElementById('vinyl-prev');
+        const next = document.getElementById('vinyl-next');
 
         // Set 3D perspective on the carousel parent so rotationY looks correct
         gsap.set(carousel, { perspective: 900 });
 
-        const tl = gsap.timeline({ onComplete: resolve });
+        const tl = gsap.timeline({ 
+            onComplete: () => {
+                // Instantly reset properties. Since incoming scaled up to look like center,
+                // and outgoing swapped positions, this snap is visually seamless.
+                gsap.set([center, prev, next], { clearProps: 'xPercent,z,scale,rotationY,opacity,visibility' });
+                if (shine) gsap.set(shine, { clearProps: 'opacity,visibility' });
+                resolve();
+            }
+        });
 
-        // Phase 1 — current disc retreats into background on one side
-        tl.to(centerDisc, {
-            xPercent: direction * -60,
-            scale: 0.38,
-            rotationY: direction * 65,
+        const isNext = direction === 1;
+        const incoming = isNext ? next : prev;
+        const outgoing = isNext ? prev : next;
+        const shine = center.querySelector('.vinyl-shine');
+
+        // Target translations (constants based on relative widths: 180px vs 90px + 16px gap)
+        const centerToSideX = isNext ? -84 : 84;
+        const incomingToCenterX = isNext ? -168 : 168;
+        const teleportX = isNext ? 436 : -436;
+        const outgoingEndX = isNext ? 336 : -336;
+        const outX = isNext ? -100 : 100;
+
+        // PHASE 1: Retreat and rotate backwards (0 -> 0.3s)
+        tl.to(center, {
+            xPercent: centerToSideX / 2,
+            z: -120,
+            scale: 0.75,
+            rotationY: isNext ? 35 : -35,
+            autoAlpha: 0.65,
+            duration: 0.3,
+            ease: 'power1.in'
+        }, 0)
+        .to(incoming, {
+            xPercent: incomingToCenterX / 2,
+            z: -120,
+            scale: 1.5,
+            rotationY: isNext ? -35 : 35,
+            autoAlpha: 0.65,
+            duration: 0.3,
+            ease: 'power1.in'
+        }, 0)
+        .to(outgoing, {
+            xPercent: outX,
+            z: -200,
+            scale: 0.5,
             autoAlpha: 0,
-            duration: 0.32,
-            ease: 'power2.in'
-        })
-        // Swap track data while disc is invisible
-        .call(onMidpoint)
-        // Teleport disc to the opposite side, still small
-        .set(centerDisc, {
-            xPercent: direction * 60,
-            rotationY: direction * -65,
-            scale: 0.38,
-            autoAlpha: 0
-        })
-        // Phase 2 — new disc rises from background into the foreground
-        .to(centerDisc, {
-            xPercent: 0,
-            scale: 1,
+            duration: 0.3,
+            ease: 'power1.in'
+        }, 0);
+
+        if (shine) {
+            tl.to(shine, { autoAlpha: 0, duration: 0.3 }, 0);
+        }
+
+        // SWAP DATA at exact midpoint
+        tl.call(onMidpoint, null, 0.3);
+
+        // TELEPORT outgoing element to the opposite side while invisible
+        tl.set(outgoing, {
+            xPercent: teleportX,
+            rotationY: isNext ? -35 : 35,
+            z: -120
+        }, 0.3);
+
+        // PHASE 2: Move forward and settle flat (0.3s -> 0.6s)
+        tl.to(center, {
+            xPercent: centerToSideX,
+            z: 0,
+            scale: 0.5, // Matches the 90px side disc
+            rotationY: 0,
+            autoAlpha: 0.3,
+            duration: 0.3,
+            ease: 'power1.out'
+        }, 0.3)
+        .to(incoming, {
+            xPercent: incomingToCenterX,
+            z: 0,
+            scale: 2, // Matches the 180px center disc
             rotationY: 0,
             autoAlpha: 1,
-            duration: 0.44,
-            ease: 'power2.out'
-        });
+            duration: 0.3,
+            ease: 'power1.out'
+        }, 0.3)
+        .to(outgoing, {
+            xPercent: outgoingEndX,
+            z: 0,
+            scale: 1, // Normal side disc scale
+            rotationY: 0,
+            autoAlpha: 0.3,
+            duration: 0.3,
+            ease: 'power1.out'
+        }, 0.3);
     });
 }
 
