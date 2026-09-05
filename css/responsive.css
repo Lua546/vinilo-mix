@@ -87,7 +87,6 @@
 
     .view-player-inner {
         max-width: 460px;
-        padding-top: var(--space-10);
     }
 
     .vinyl-disc--main {
@@ -213,7 +212,6 @@
 
     /* Player View adjustments */
     .view-player-inner {
-        padding-top: var(--space-8);
         gap: var(--space-4);
     }
 
@@ -331,8 +329,9 @@
     }
 
     .note-card-text {
-        font-size: 0.7rem;
-        -webkit-line-clamp: 3;
+        font-size: 0.72rem;
+        max-height: calc(4 * 2.25rem);
+        overflow-y: auto;
     }
 
     .controls {
