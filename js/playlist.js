@@ -99,10 +99,21 @@ export function setActiveTrack(index) {
         item.setAttribute('aria-current', isActive ? 'true' : 'false');
     });
 
-    // Scroll active item into view if needed
+    // Scroll active item smoothly into view within the track-list container only
     const activeItem = trackListEl.children[index];
     if (activeItem) {
-        activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        const listRect = trackListEl.getBoundingClientRect();
+        const itemRect = activeItem.getBoundingClientRect();
+        const relativeTop = itemRect.top - listRect.top + trackListEl.scrollTop;
+        const relativeBottom = relativeTop + activeItem.offsetHeight;
+        const currentScrollTop = trackListEl.scrollTop;
+        const visibleHeight = trackListEl.clientHeight;
+
+        if (relativeTop < currentScrollTop) {
+            trackListEl.scrollTo({ top: relativeTop, behavior: 'smooth' });
+        } else if (relativeBottom > currentScrollTop + visibleHeight) {
+            trackListEl.scrollTo({ top: relativeBottom - visibleHeight, behavior: 'smooth' });
+        }
     }
 }
 
