@@ -151,7 +151,11 @@
                     aria-label="Progreso de reproducción" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
                     tabindex="0">
                     <div id="progress-fill" class="progress-bar-fill"></div>
-                    <div id="progress-thumb" class="progress-bar-thumb"></div>
+                    <div id="progress-thumb" class="progress-bar-thumb" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" class="progress-heart" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                    </div>
                 </div>
                 <div class="progress-times">
                     <span id="time-current" class="time-current">0:00</span>
@@ -163,23 +167,24 @@
             <!-- Controls -->
             <div class="controls" role="group" aria-label="Controles de reproducción">
                 <button id="btn-prev" class="control-btn" type="button" aria-label="Canción anterior">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                        <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <line x1="5" y1="6" x2="5" y2="18" />
+                        <polygon points="19 6 9 12 19 18" />
                     </svg>
                 </button>
                 <button id="btn-play" class="control-btn control-btn--play" type="button" aria-label="Reproducir">
-                    <svg id="icon-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-                        focusable="false">
-                        <path d="M8 5v14l11-7z" />
+                    <svg id="icon-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <polygon points="8 5 19 12 8 19" />
                     </svg>
-                    <svg id="icon-pause" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-                        focusable="false" style="display:none;">
-                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                    <svg id="icon-pause" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="display:none;">
+                        <line x1="8" y1="5" x2="8" y2="19" />
+                        <line x1="16" y1="5" x2="16" y2="19" />
                     </svg>
                 </button>
                 <button id="btn-next" class="control-btn" type="button" aria-label="Siguiente canción">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                        <path d="M6 18l8.5-6L6 6v12zm8.5-6L23 6v12z" />
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <polygon points="5 6 15 12 5 18" />
+                        <line x1="19" y1="6" x2="19" y2="18" />
                     </svg>
                 </button>
             </div>

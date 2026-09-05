@@ -460,19 +460,28 @@
 .progress-bar-thumb {
     position: absolute;
     top: 50%;
-    width: 10px;
-    height: 10px;
-    background: var(--accent);
-    border-radius: 50%;
+    width: 18px;
+    height: 18px;
     transform: translate(-50%, -50%);
     left: 0%;
-    opacity: 0;
-    transition: opacity var(--transition-fast), background var(--transition-slow);
+    opacity: 1;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-fast);
 }
 
-.progress-bar-container:hover .progress-bar-thumb {
-    opacity: 1;
+.progress-heart {
+    width: 16px;
+    height: 16px;
+    fill: var(--accent);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.18));
+    transition: fill var(--transition-slow), transform var(--transition-fast);
+}
+
+.progress-bar-container:hover .progress-heart {
+    transform: scale(1.25);
 }
 
 .progress-times {
@@ -510,16 +519,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    color: var(--muted);
-    transition: color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+    background: var(--surface-alt);
+    color: var(--text);
+    border: none;
+    cursor: pointer;
+    transition: color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .control-btn:hover {
-    color: var(--text);
-    background: rgba(0, 0, 0, 0.04);
+    color: var(--accent);
+    background: rgba(0, 0, 0, 0.06);
+    transform: scale(1.06);
 }
 
 .control-btn:focus-visible {
@@ -528,32 +541,31 @@
 }
 
 .control-btn svg {
-    width: 22px;
-    height: 22px;
-    fill: currentColor;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
 }
 
 .control-btn--play {
-    width: 56px;
-    height: 56px;
+    width: 60px;
+    height: 60px;
     background: var(--accent);
-    color: var(--accent-contrast);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
     transition: background var(--transition-slow), transform var(--transition-fast), box-shadow var(--transition-fast);
     will-change: transform;
 }
 
 .control-btn--play:hover {
     background: var(--accent-light);
-    color: var(--accent-contrast);
-    transform: scale(1.06);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.20);
+    color: #ffffff;
+    transform: scale(1.08);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
 }
 
 .control-btn--play svg {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
 }
 
 /* ── Note card ──────────────────────────────────────── */
