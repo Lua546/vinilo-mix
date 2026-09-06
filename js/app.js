@@ -11,6 +11,7 @@ import {
     animateTrackChange, animateIntro, pulsePlayButton, pulseControlButton,
     animateCarouselChange, setupCarouselObserver, animateViewTransition
 } from './animations.js';
+import { initFloatingBackground, refreshFloatingBackground } from './floatingBackground.js';
 
 // ── Central state ─────────────────────────────────────
 const state = {
@@ -90,6 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         setActiveTrack(0);
         loadTrack(firstTrack.audio || '');
 
+        await initFloatingBackground();
         runIntro();
     } catch (err) {
         console.error('[App] Initialization failed:', err);
@@ -245,6 +247,8 @@ async function selectTrack(index) {
         // Also update list UI silently
         updateListUI(track);
     }
+
+    refreshFloatingBackground();
 
     loadTrack(track.audio || '');
     if (state.isPlaying) play();

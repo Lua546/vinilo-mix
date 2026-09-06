@@ -34,6 +34,29 @@ body {
     justify-content: center;
 }
 
+/* ── Floating Animated Background ───────────────────── */
+#floating-background {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.floating-element {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+    object-fit: contain;
+}
+
 /* ── Base View Container ───────────────────────────── */
 .view {
     position: absolute;
@@ -48,7 +71,8 @@ body {
     padding: var(--space-5) var(--space-4) calc(var(--space-8) + env(safe-area-inset-bottom, 24px));
     box-sizing: border-box;
     will-change: transform, opacity;
-    background: var(--background);
+    background: transparent;
+    z-index: 1;
 }
 
 .view.is-active {
@@ -228,7 +252,8 @@ body {
     }
 
     /* Utility elements — remove from grid flow */
-    #loading-overlay {
+    #loading-overlay,
+    #floating-background {
         position: fixed;
         grid-column: 1 / -1;
         grid-row: 1 / -1;
