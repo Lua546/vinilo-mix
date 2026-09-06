@@ -55,9 +55,17 @@
 
             <!-- CTA header -->
             <div class="list-cta-header" aria-hidden="true">
-                <span class="cta-dot">✦</span>
+                <span class="cta-dot">
+                    <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2l2.4 7.6H22l-6.2 4.5 2.4 7.6L12 17l-6.2 4.7 2.4-7.6L2 9.6h7.6z"/>
+                    </svg>
+                </span>
                 <p class="cta-label" id="cta-label">HAZ CLICK PARA REPRODUCIR</p>
-                <span class="cta-dot">✦</span>
+                <span class="cta-dot">
+                    <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2l2.4 7.6H22l-6.2 4.5 2.4 7.6L12 17l-6.2 4.7 2.4-7.6L2 9.6h7.6z"/>
+                    </svg>
+                </span>
             </div>
 
             <!-- Current track info (above carousel) -->
@@ -74,10 +82,20 @@
                     <div class="vinyl-disc vinyl-disc--side"></div>
                 </div>
 
-                <!-- Center vinyl — clickable, navigates to player -->
+                <!-- Center vinyl — clickable, navigates to player (mobile) / toggles play (desktop) -->
                 <button id="vinyl-center" class="vinyl-item vinyl-item--center" type="button"
-                    aria-label="Abrir reproductor">
+                    aria-label="Reproducir">
                     <div id="vinyl-disc-main" class="vinyl-disc vinyl-disc--main"></div>
+                    <!-- Center Play/Pause indicator icon badge -->
+                    <div class="vinyl-center-badge" aria-hidden="true">
+                        <svg id="vinyl-badge-play" class="vinyl-badge-icon vinyl-badge-play" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="8 5 19 12 8 19" />
+                        </svg>
+                        <svg id="vinyl-badge-pause" class="vinyl-badge-icon vinyl-badge-pause" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                            <rect x="6" y="5" width="4" height="14" rx="1" />
+                            <rect x="14" y="5" width="4" height="14" rx="1" />
+                        </svg>
+                    </div>
                     <!-- Static light reflection overlay (does not rotate with disc) -->
                     <div class="vinyl-shine" aria-hidden="true"></div>
                 </button>

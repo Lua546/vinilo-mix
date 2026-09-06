@@ -43,6 +43,8 @@ const dom = {
     vinylCarousel:   document.getElementById('vinyl-carousel'),
     vinylCenter:     document.getElementById('vinyl-center'),
     vinylCenterDisc: document.getElementById('vinyl-disc-main'),
+    vinylBadgePlay:  document.getElementById('vinyl-badge-play'),
+    vinylBadgePause: document.getElementById('vinyl-badge-pause'),
     spotifyBtn:      document.getElementById('spotify-btn'),
 
     // Player View
@@ -134,7 +136,7 @@ function setupModules() {
     initVinyl([dom.vinylPlayer, dom.vinylCenterDisc]);
 
     initPlayer(dom.audio, state, {
-        onTrackEnd:   (index) => selectTrack(index),
+        onTrackEnd:   (index, autoPlay = true) => selectTrack(index, autoPlay),
         onTimeUpdate: updateProgress,
         onPlayState:  updatePlayState,
         onTrackError: () => console.error('[App] Audio playback error'),
@@ -208,11 +210,14 @@ function setupNavigationHistory() {
 
 // ── Track selection ───────────────────────────────────
 
-async function selectTrack(index) {
+async function selectTrack(index, autoPlay = null) {
     if (state.isAnimating) return;
     
     // If just clicking the same track, do nothing
     if (index === state.currentTrackIndex) return;
+
+    // Preserve playing state unless explicitly specified
+    const shouldPlay = autoPlay !== null ? autoPlay : state.isPlaying;
 
     state.isAnimating = true;
     const direction = index > state.currentTrackIndex ? 1 : -1;
@@ -251,7 +256,7 @@ async function selectTrack(index) {
     refreshFloatingBackground();
 
     loadTrack(track.audio || '');
-    if (state.isPlaying) play();
+    if (shouldPlay) play();
     
     state.isAnimating = false;
 }
@@ -323,7 +328,17 @@ function updatePlayState(playing) {
 
     dom.iconPlay.style.display  = playing ? 'none'  : 'block';
     dom.iconPause.style.display = playing ? 'block' : 'none';
-    dom.btnPlay.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+    dom.btnPlay.setAttribute('aria-label', playing ? 'Pausar' : 'Reproducir');
+
+    if (dom.vinylBadgePlay && dom.vinylBadgePause) {
+        dom.vinylBadgePlay.style.display  = playing ? 'none'  : 'block';
+        dom.vinylBadgePause.style.display = playing ? 'block' : 'none';
+    }
+
+    dom.vinylCenter.setAttribute(
+        'aria-label',
+        state.isDesktop ? (playing ? 'Pausar' : 'Reproducir') : 'Abrir reproductor'
+    );
 
     if (playing) {
         playVinyl();
@@ -335,8 +350,16 @@ function updatePlayState(playing) {
 // ── Controls ──────────────────────────────────────────
 
 function setupControls() {
-    // Navigation
-    dom.vinylCenter.addEventListener('click', () => navigateTo('player'));
+    // Navigation & Center Vinyl interaction
+    dom.vinylCenter.addEventListener('click', () => {
+        if (state.isDesktop) {
+            pulseControlButton(dom.vinylCenter);
+            togglePlay();
+        } else {
+            pulsePlayButton(dom.vinylCenter);
+            navigateTo('player');
+        }
+    });
     dom.btnBack.addEventListener('click', () => navigateTo('list'));
 
     // Player controls

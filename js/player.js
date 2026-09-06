@@ -67,18 +67,19 @@ export function togglePlay() {
 
 export function next() {
     const nextIndex = (state.currentTrackIndex + 1) % state.tracks.length;
-    onTrackEnd(nextIndex);
+    onTrackEnd(nextIndex, true);
 }
 
 export function previous() {
     if (audioEl.currentTime > 3) {
         // Restart current track
         audioEl.currentTime = 0;
+        play();
     } else {
         const prevIndex = state.currentTrackIndex === 0
             ? state.tracks.length - 1
             : state.currentTrackIndex - 1;
-        onTrackEnd(prevIndex);
+        onTrackEnd(prevIndex, true);
     }
 }
 
@@ -133,7 +134,7 @@ function handleMetadata() {
 
 function handleEnded() {
     const nextIndex = (state.currentTrackIndex + 1) % state.tracks.length;
-    onTrackEnd(nextIndex);
+    onTrackEnd(nextIndex, true);
 }
 
 function handleError() {
