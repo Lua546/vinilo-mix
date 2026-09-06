@@ -278,19 +278,16 @@ function updateThemeForTrack(track) {
     updateTheme(dom.analysisImg, track.cover);
 }
 
+const DEFAULT_PLAYLIST_URL = 'https://music.youtube.com/playlist?list=PLkB1wC8dS7tNWeZqKu1Ins5cFA61_HcaL';
+
 function updateListUI(track) {
     dom.listTrackTitle.textContent = track.title;
     dom.listTrackMeta.textContent  = `${track.album} · ${track.artist}`;
 
-    if (track.spotify) {
-        dom.spotifyBtn.href = track.spotify;
-        dom.spotifyBtn.classList.remove('is-disabled');
-        dom.spotifyBtn.removeAttribute('aria-disabled');
-    } else {
-        dom.spotifyBtn.removeAttribute('href');
-        dom.spotifyBtn.classList.add('is-disabled');
-        dom.spotifyBtn.setAttribute('aria-disabled', 'true');
-    }
+    const link = track.spotify || track.link || DEFAULT_PLAYLIST_URL;
+    dom.spotifyBtn.href = link;
+    dom.spotifyBtn.classList.remove('is-disabled');
+    dom.spotifyBtn.removeAttribute('aria-disabled');
 }
 
 function updatePlayerUI(track) {
